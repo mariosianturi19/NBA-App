@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, SafeAreaView, RefreshControl, Alert } from 'react-native';
-import { Card, Text } from 'react-native-elements';
-import styled from 'styled-components/native';
+import { FlatList, SafeAreaView, RefreshControl, Alert, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { getNBAStandings } from '../service/StandingService';
 
 const StandingsScreen = () => {
@@ -43,34 +41,37 @@ const StandingsScreen = () => {
   });
 
   const renderItem = ({ item }) => (
-    <StandingsCard>
-      <TeamName>{item?.team?.name || 'Unknown Team'}</TeamName>
-      <StyledDivider />
-      <StatsRow>
-        <StatItem>
-          <StatLabel>Rank</StatLabel>
-          <StatValue>{item?.conference?.rank || 'N/A'}</StatValue>
-        </StatItem>
-        <StatItem>
-          <StatLabel>Wins</StatLabel>
-          <StatValue>{item?.win?.total || 'N/A'}</StatValue>
-        </StatItem>
-        <StatItem>
-          <StatLabel>Losses</StatLabel>
-          <StatValue>{item?.loss?.total || 'N/A'}</StatValue>
-        </StatItem>
-      </StatsRow>
-    </StandingsCard>
+    <View style={styles.standingsCard}>
+      <Text style={styles.teamName}>{item?.team?.name || 'Unknown Team'}</Text>
+      <View style={styles.divider} />
+      <View style={styles.statsRow}>
+        <View style={styles.statItem}>
+          <Text style={styles.statLabel}>Rank</Text>
+          <Text style={styles.statValue}>{item?.conference?.rank || 'N/A'}</Text>
+        </View>
+        <View style={styles.statItem}>
+          <Text style={styles.statLabel}>Wins</Text>
+          <Text style={styles.statValue}>{item?.win?.total || 'N/A'}</Text>
+        </View>
+        <View style={styles.statItem}>
+          <Text style={styles.statLabel}>Losses</Text>
+          <Text style={styles.statValue}>{item?.loss?.total || 'N/A'}</Text>
+        </View>
+      </View>
+    </View>
   );
 
   return (
-    <Container>
-      <Title>NBA Standings</Title>
-      <SortButton onPress={() => setAscending(!ascending)}>
-        <SortButtonText>
+    <SafeAreaView style={styles.container}>
+      <Text style={styles.title}>NBA Standings</Text>
+      <TouchableOpacity 
+        style={styles.sortButton}
+        onPress={() => setAscending(!ascending)}
+      >
+        <Text style={styles.sortButtonText}>
           {ascending ? "Sort by Lowest Rank" : "Sort by Highest Rank"}
-        </SortButtonText>
-      </SortButton>
+        </Text>
+      </TouchableOpacity>
       
       <FlatList
         data={sortedStandings}
@@ -87,38 +88,33 @@ const StandingsScreen = () => {
         }
         ListEmptyComponent={
           !loading && (
-            <EmptyContainer>
-              <EmptyText>Tidak ada data standings</EmptyText>
-            </EmptyContainer>
+            <View style={styles.emptyContainer}>
+              <Text style={styles.emptyText}>Tidak ada data standings</Text>
+            </View>
           )
         }
       />
-    </Container>
+    </SafeAreaView>
   );
 };
 
-const styles = {
+const styles = StyleSheet.create({
   listContainer: {
     padding: 16,
   },
-};
-
-const Container = styled(SafeAreaView)`
-  flex: 1;
-  background-color: #111827;
-`;
-
-const Title = styled.Text`
-  font-size: 28px;
-  font-weight: bold;
-  text-align: center;
-  margin-vertical: 16px;
-  color: #F3F4F6;
-  letter-spacing: 0.5px;
-`;
-
-const StandingsCard = styled(Card).attrs({
-  containerStyle: {
+  container: {
+    flex: 1,
+    backgroundColor: '#111827',
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginVertical: 16,
+    color: '#F3F4F6',
+    letterSpacing: 0.5,
+  },
+  standingsCard: {
     borderRadius: 16,
     elevation: 8,
     marginHorizontal: 2,
@@ -131,72 +127,62 @@ const StandingsCard = styled(Card).attrs({
     shadowRadius: 5,
     padding: 16,
   },
-})``;
-
-const TeamName = styled.Text`
-  font-size: 20px;
-  font-weight: bold;
-  color: #F3F4F6;
-  margin-bottom: 12px;
-  text-align: center;
-  letter-spacing: 0.5px;
-`;
-
-const StyledDivider = styled.View`
-  height: 1px;
-  background-color: #374151;
-  margin-vertical: 12px;
-`;
-
-const StatsRow = styled.View`
-  flex-direction: row;
-  justify-content: space-around;
-  margin-top: 4px;
-`;
-
-const StatItem = styled.View`
-  align-items: center;
-`;
-
-const StatLabel = styled.Text`
-  font-size: 14px;
-  color: #9CA3AF;
-  margin-bottom: 4px;
-`;
-
-const StatValue = styled.Text`
-  font-size: 18px;
-  font-weight: bold;
-  color: #60A5FA;
-`;
-
-const SortButton = styled.TouchableOpacity`
-  background-color: #2563EB;
-  padding-vertical: 12px;
-  padding-horizontal: 24px;
-  border-radius: 12px;
-  margin-horizontal: 16px;
-  margin-bottom: 16px;
-`;
-
-const SortButtonText = styled.Text`
-  color: #F3F4F6;
-  font-size: 16px;
-  font-weight: bold;
-  text-align: center;
-`;
-
-const EmptyContainer = styled.View`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-  padding-top: 40px;
-`;
-
-const EmptyText = styled.Text`
-  font-size: 18px;
-  color: #9CA3AF;
-  text-align: center;
-`;
+  teamName: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#F3F4F6',
+    marginBottom: 12,
+    textAlign: 'center',
+    letterSpacing: 0.5,
+  },
+  divider: {
+    height: 1,
+    backgroundColor: '#374151',
+    marginVertical: 12,
+  },
+  statsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: 4,
+  },
+  statItem: {
+    alignItems: 'center',
+  },
+  statLabel: {
+    fontSize: 14,
+    color: '#9CA3AF',
+    marginBottom: 4,
+  },
+  statValue: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#60A5FA',
+  },
+  sortButton: {
+    backgroundColor: '#2563EB',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 12,
+    marginHorizontal: 16,
+    marginBottom: 16,
+  },
+  sortButtonText: {
+    color: '#F3F4F6',
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 40,
+  },
+  emptyText: {
+    fontSize: 18,
+    color: '#9CA3AF',
+    textAlign: 'center',
+  },
+});
 
 export default StandingsScreen;

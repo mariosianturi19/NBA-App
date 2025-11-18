@@ -1,6 +1,5 @@
 import React from 'react';
-import { ScrollView, View, Text, Image, StyleSheet, TouchableOpacity, Linking } from 'react-native';
-import styled from 'styled-components/native';
+import { ScrollView, View, Text, Image, StyleSheet, TouchableOpacity, Linking, SafeAreaView } from 'react-native';
 
 const ProfileScreen = ({ navigation }) => {
   const handleOpenInstagram = () => {
@@ -12,71 +11,75 @@ const ProfileScreen = ({ navigation }) => {
   };
 
   return (
-    <Container>
+    <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.content}>
-        <ProfileCard>
-          <ProfileImageWrapper>
-            <ProfileImage source={require('../../assets/Profile.jpg')} />
-          </ProfileImageWrapper>
-          <ProfileInfo>
-            <ProfileName>Togar Anthony Mario Sianturi</ProfileName>
-            <SocialLinks>
+        <View style={styles.profileCard}>
+          <View style={styles.profileImageWrapper}>
+            <Image source={require('../../assets/Profile.jpg')} style={styles.profileImage} />
+          </View>
+          <View style={styles.profileInfo}>
+            <Text style={styles.profileName}>Togar Anthony Mario Sianturi</Text>
+            <View style={styles.socialLinks}>
               <TouchableOpacity onPress={handleOpenInstagram} style={styles.socialLink}>
-                <SocialIcon source={require('../../assets/InstagramIcon.png')} />
-                <ProfileDetails>@mariosianturii</ProfileDetails>
+                <Image source={require('../../assets/InstagramIcon.png')} style={styles.socialIcon} />
+                <Text style={styles.profileDetails}>@mariosianturii</Text>
               </TouchableOpacity>
 
               <TouchableOpacity onPress={handleOpenWhatsApp} style={styles.socialLink}>
-                <SocialIcon source={require('../../assets/WhatsAppIcon.png')} />
-                <ProfileDetails>+628771655446</ProfileDetails>
+                <Image source={require('../../assets/WhatsAppIcon.png')} style={styles.socialIcon} />
+                <Text style={styles.profileDetails}>+628771655446</Text>
               </TouchableOpacity>
-            </SocialLinks>
-          </ProfileInfo>
-        </ProfileCard>
+            </View>
+          </View>
+        </View>
 
-        <SectionCard>
-          <SectionTitle>Personal Information</SectionTitle>
-          <SectionContent>
-            <InfoItem>
-              <InfoLabel>Nickname:</InfoLabel>
-              <InfoValue>Mario</InfoValue>
-            </InfoItem>
-            <InfoItem>
-              <InfoLabel>Birthdate:</InfoLabel>
-              <InfoValue>July 19, 2004</InfoValue>
-            </InfoItem>
-            <InfoItem>
-              <InfoLabel>Country:</InfoLabel>
-              <InfoValue>Indonesia</InfoValue>
-            </InfoItem>
-          </SectionContent>
-        </SectionCard>
+        <View style={styles.sectionCard}>
+          <Text style={styles.sectionTitle}>Personal Information</Text>
+          <View style={styles.sectionContent}>
+            <View style={styles.infoItem}>
+              <Text style={styles.infoLabel}>Nickname:</Text>
+              <Text style={styles.infoValue}>Mario</Text>
+            </View>
+            <View style={styles.infoItem}>
+              <Text style={styles.infoLabel}>Birthdate:</Text>
+              <Text style={styles.infoValue}>July 19, 2004</Text>
+            </View>
+            <View style={styles.infoItem}>
+              <Text style={styles.infoLabel}>Country:</Text>
+              <Text style={styles.infoValue}>Indonesia</Text>
+            </View>
+          </View>
+        </View>
 
-        <SectionCard>
-          <SectionTitle>Favorite Teams</SectionTitle>
-          <SectionContent>
-            <TeamWrapper>
-              <TeamLogo source={require('../../assets/LosAngelesLakersLogo.png')} />
-              <TeamName>Los Angeles Lakers</TeamName>
-            </TeamWrapper>
-          </SectionContent>
-        </SectionCard>
+        <View style={styles.sectionCard}>
+          <Text style={styles.sectionTitle}>Favorite Teams</Text>
+          <View style={styles.sectionContent}>
+            <View style={styles.teamWrapper}>
+              <Image source={require('../../assets/LosAngelesLakersLogo.png')} style={styles.teamLogo} />
+              <Text style={styles.teamName}>Los Angeles Lakers</Text>
+            </View>
+          </View>
+        </View>
 
-        <SectionCard>
-          <SectionTitle>Favorite Players</SectionTitle>
-          <SectionContent>
-            <TeamWrapper>
-              <TeamLogo source={require('../../assets/LebronJames.png')} />
-              <TeamName>Lebron James</TeamName>
-            </TeamWrapper>
-          </SectionContent>
-        </SectionCard>
+        <View style={styles.sectionCard}>
+          <Text style={styles.sectionTitle}>Favorite Players</Text>
+          <View style={styles.sectionContent}>
+            <View style={styles.teamWrapper}>
+              <Image source={require('../../assets/LebronJames.png')} style={styles.teamLogo} />
+              <Text style={styles.teamName}>Lebron James</Text>
+            </View>
+          </View>
+        </View>
       </ScrollView>
-    </Container>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#111827',
+  },
   content: {
     flexGrow: 1,
     padding: 24,
@@ -86,122 +89,100 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 8,
   },
+  profileCard: {
+    backgroundColor: '#1F2937',
+    borderRadius: 20,
+    padding: 24,
+    alignItems: 'center',
+    marginBottom: 24,
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+  },
+  profileImageWrapper: {
+    backgroundColor: '#374151',
+    borderRadius: 80,
+    padding: 4,
+    marginBottom: 16,
+    elevation: 3,
+  },
+  profileImage: {
+    width: 128,
+    height: 128,
+    borderRadius: 64,
+  },
+  profileInfo: {
+    alignItems: 'center',
+  },
+  profileName: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#F3F4F6',
+    marginBottom: 8,
+  },
+  profileDetails: {
+    fontSize: 16,
+    color: '#9CA3AF',
+    marginLeft: 8,
+  },
+  socialLinks: {
+    alignItems: 'flex-start',
+    marginTop: 8,
+  },
+  socialIcon: {
+    width: 24,
+    height: 24,
+  },
+  sectionCard: {
+    backgroundColor: '#1F2937',
+    borderRadius: 20,
+    padding: 20,
+    marginBottom: 24,
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#F3F4F6',
+    marginBottom: 16,
+  },
+  sectionContent: {
+    paddingHorizontal: 12,
+  },
+  infoItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  infoLabel: {
+    fontSize: 16,
+    color: '#9CA3AF',
+    width: 100,
+  },
+  infoValue: {
+    fontSize: 16,
+    color: '#F3F4F6',
+  },
+  teamWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  teamLogo: {
+    width: 48,
+    height: 48,
+    marginRight: 12,
+  },
+  teamName: {
+    fontSize: 16,
+    color: '#F3F4F6',
+  },
 });
-
-const Container = styled.SafeAreaView`
-  flex: 1;
-  background-color: #111827;
-`;
-
-const ProfileCard = styled.View`
-  background-color: #1F2937;
-  border-radius: 20px;
-  padding: 24px;
-  align-items: center;
-  margin-bottom: 24px;
-  elevation: 4;
-  shadow-color: #000;
-  shadow-offset: 0px 2px;
-  shadow-opacity: 0.25;
-  shadow-radius: 3.84px;
-`;
-
-const ProfileImageWrapper = styled.View`
-  background-color: #374151;
-  border-radius: 80px;
-  padding: 4px;
-  margin-bottom: 16px;
-  elevation: 3;
-`;
-
-const ProfileImage = styled.Image`
-  width: 128px;
-  height: 128px;
-  border-radius: 64px;
-`;
-
-const ProfileInfo = styled.View`
-  align-items: center;
-`;
-
-const ProfileName = styled.Text`
-  font-size: 20px;
-  font-weight: bold;
-  color: #F3F4F6;
-  margin-bottom: 8px;
-`;
-
-const ProfileDetails = styled.Text`
-  font-size: 16px;
-  color: #9CA3AF;
-  margin-left: 8px;
-`;
-
-const SocialLinks = styled.View`
-  align-items: flex-start;
-  margin-top: 8px;
-`;
-
-const SocialIcon = styled.Image`
-  width: 24px;
-  height: 24px;
-`;
-
-const SectionCard = styled.View`
-  background-color: #1F2937;
-  border-radius: 20px;
-  padding: 20px;
-  margin-bottom: 24px;
-  elevation: 4;
-  shadow-color: #000;
-  shadow-offset: 0px 2px;
-  shadow-opacity: 0.25;
-  shadow-radius: 3.84px;
-`;
-
-const SectionTitle = styled.Text`
-  font-size: 18px;
-  font-weight: bold;
-  color: #F3F4F6;
-  margin-bottom: 16px;
-`;
-
-const SectionContent = styled.View`
-  padding-horizontal: 12px;
-`;
-
-const InfoItem = styled.View`
-  flex-direction: row;
-  align-items: center;
-  margin-bottom: 12px;
-`;
-
-const InfoLabel = styled.Text`
-  font-size: 16px;
-  color: #9CA3AF;
-  width: 100px;
-`;
-
-const InfoValue = styled.Text`
-  font-size: 16px;
-  color: #F3F4F6;
-`;
-
-const TeamWrapper = styled.View`
-  flex-direction: row;
-  align-items: center;
-  margin-bottom: 12px;
-`;
-
-const TeamLogo = styled.Image`
-  width: 48px;
-  height: 48px;
-  margin-right: 12px;
-`;
-
-const TeamName = styled.Text`
-  font-size: 16px;
-  color: #F3F4F6;
-`;
 
 export default ProfileScreen;

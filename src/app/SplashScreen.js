@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Image, StyleSheet, ActivityIndicator } from 'react-native';
-import styled from 'styled-components/native';
+import { View, Image, StyleSheet, ActivityIndicator, Text } from 'react-native';
 
 export default function SplashScreen({ navigation }) {
   useEffect(() => {
@@ -11,41 +10,43 @@ export default function SplashScreen({ navigation }) {
   }, [navigation]);
 
   return (
-    <Container>
-      <SplashImage source={require('../../assets/SplashNBA.png')} />
-      <LoadingWrapper>
+    <View style={styles.container}>
+      <Image 
+        source={require('../../assets/SplashNBA.png')} 
+        style={styles.splashImage}
+      />
+      <View style={styles.loadingWrapper}>
         <ActivityIndicator size="large" color="#FFFFFF" />
-        <PoweredText>Created by Mario Sianturi</PoweredText>
-      </LoadingWrapper>
-    </Container>
+        <Text style={styles.poweredText}>Created by Mario Sianturi</Text>
+      </View>
+    </View>
   );
 }
 
-const Container = styled.View`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-  background-color: #000;
-`;
-
-const SplashImage = styled.Image`
-  width: 100%;
-  height: 100%;
-  resize-mode: cover;
-  position: absolute;
-`;
-
-const LoadingWrapper = styled.View`
-  position: absolute;
-  bottom: 80px;
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-`;
-
-const PoweredText = styled.Text`
-  color: #FFFFFF;
-  font-size: 16px;
-  margin-top: 10px;
-  text-align: center;
-`;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#000',
+  },
+  splashImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+    position: 'absolute',
+  },
+  loadingWrapper: {
+    position: 'absolute',
+    bottom: 80,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  poweredText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    marginTop: 10,
+    textAlign: 'center',
+  },
+});

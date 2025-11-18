@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { 
   View, 
+  Text,
+  Image,
   FlatList, 
   SafeAreaView,
   RefreshControl,
   Alert,
   ActivityIndicator,
+  StyleSheet,
 } from 'react-native';
-import styled from 'styled-components/native';
 import { getNBATeamsPlayers } from '../service/PlayersService';
 
 const PlayersScreen = ({ route }) => {
@@ -38,41 +40,41 @@ const PlayersScreen = ({ route }) => {
   }, []);
 
   const renderItem = ({ item }) => (
-    <PlayerCard>
-      <PlayerImageWrapper>
-        <PlayerImage/>
-      </PlayerImageWrapper>
-      <PlayerInfo>
-        <PlayerName>{item.firstname} {item.lastname}</PlayerName>
-        <PlayerDetails>
-          Posisi: <DetailText>{item.pos || 'N/A'}</DetailText>
-        </PlayerDetails>
-        <PlayerDetails>
-          Nomor Jersey: <DetailText>{item.leagues?.standard?.jersey || 'N/A'}</DetailText>
-        </PlayerDetails>
-        <PlayerDetails>
-          Tinggi: <DetailText>{item.height?.feets || 'N/A'}' {item.height?.inches || 'N/A'}"</DetailText>
-        </PlayerDetails>
-        <PlayerDetails>
-          Berat: <DetailText>{item.weight?.pounds || 'N/A'} lbs</DetailText>
-        </PlayerDetails>
-        <PlayerDetails>
-          Asal: <DetailText>{item.birth?.country || 'N/A'}</DetailText>
-        </PlayerDetails>
-      </PlayerInfo>
-    </PlayerCard>
+    <View style={styles.playerCard}>
+      <View style={styles.playerImageWrapper}>
+        <Image style={styles.playerImage} />
+      </View>
+      <View style={styles.playerInfo}>
+        <Text style={styles.playerName}>{item.firstname} {item.lastname}</Text>
+        <Text style={styles.playerDetails}>
+          Posisi: <Text style={styles.detailText}>{item.pos || 'N/A'}</Text>
+        </Text>
+        <Text style={styles.playerDetails}>
+          Nomor Jersey: <Text style={styles.detailText}>{item.leagues?.standard?.jersey || 'N/A'}</Text>
+        </Text>
+        <Text style={styles.playerDetails}>
+          Tinggi: <Text style={styles.detailText}>{item.height?.feets || 'N/A'}' {item.height?.inches || 'N/A'}"</Text>
+        </Text>
+        <Text style={styles.playerDetails}>
+          Berat: <Text style={styles.detailText}>{item.weight?.pounds || 'N/A'} lbs</Text>
+        </Text>
+        <Text style={styles.playerDetails}>
+          Asal: <Text style={styles.detailText}>{item.birth?.country || 'N/A'}</Text>
+        </Text>
+      </View>
+    </View>
   );
 
   if (loading) {
     return (
-      <LoadingContainer>
+      <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#60A5FA" />
-      </LoadingContainer>
+      </View>
     );
   }
 
   return (
-    <Container>
+    <SafeAreaView style={styles.container}>
       <FlatList
         data={players}
         renderItem={renderItem}
@@ -88,95 +90,84 @@ const PlayersScreen = ({ route }) => {
         contentContainerStyle={styles.listContent}
         ListEmptyComponent={
           !loading && (
-            <EmptyContainer>
-              <EmptyText>Tidak ada data pemain</EmptyText>
-            </EmptyContainer>
+            <View style={styles.emptyContainer}>
+              <Text style={styles.emptyText}>Tidak ada data pemain</Text>
+            </View>
           )
         }
       />
-    </Container>
+    </SafeAreaView>
   );
 };
 
-const styles = {
+const styles = StyleSheet.create({
   listContent: {
     paddingVertical: 12,
     paddingHorizontal: 16,
   },
-};
-
-const Container = styled(SafeAreaView)`
-  flex: 1;
-  background-color: #111827;
-`;
-
-const LoadingContainer = styled.View`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-  background-color: #111827;
-`;
-
-const PlayerCard = styled.View`
-  flex-direction: row;
-  background-color: #1F2937;
-  border-radius: 16px;
-  padding: 12px;
-  margin-bottom: 12px;
-  elevation: 4;
-  shadow-color: #000;
-  shadow-offset: 0px 2px;
-  shadow-opacity: 0.25;
-  shadow-radius: 3.84px;
-`;
-
-const PlayerImageWrapper = styled.View`
-  background-color: #374151;
-  border-radius: 40px;
-  padding: 2px;
-  elevation: 3;
-`;
-
-const PlayerImage = styled.Image`
-  width: 64px;
-  height: 64px;
-  border-radius: 32px;
-`;
-
-const PlayerInfo = styled.View`
-  flex: 1;
-  margin-left: 16px;
-  justify-content: center;
-`;
-
-const PlayerName = styled.Text`
-  font-size: 18px;
-  font-weight: bold;
-  color: #F3F4F6;
-  margin-bottom: 4px;
-`;
-
-const PlayerDetails = styled.Text`
-  font-size: 14px;
-  color: #9CA3AF;
-`;
-
-const DetailText = styled.Text`
-  font-weight: bold;
-  color: #F3F4F6;
-`;
-
-const EmptyContainer = styled.View`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-  padding-top: 40px;
-`;
-
-const EmptyText = styled.Text`
-  font-size: 18px;
-  color: #9CA3AF;
-  text-align: center;
-`;
+  container: {
+    flex: 1,
+    backgroundColor: '#111827',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#111827',
+  },
+  playerCard: {
+    flexDirection: 'row',
+    backgroundColor: '#1F2937',
+    borderRadius: 16,
+    padding: 12,
+    marginBottom: 12,
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+  },
+  playerImageWrapper: {
+    backgroundColor: '#374151',
+    borderRadius: 40,
+    padding: 2,
+    elevation: 3,
+  },
+  playerImage: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+  },
+  playerInfo: {
+    flex: 1,
+    marginLeft: 16,
+    justifyContent: 'center',
+  },
+  playerName: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#F3F4F6',
+    marginBottom: 4,
+  },
+  playerDetails: {
+    fontSize: 14,
+    color: '#9CA3AF',
+  },
+  detailText: {
+    fontWeight: 'bold',
+    color: '#F3F4F6',
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 40,
+  },
+  emptyText: {
+    fontSize: 18,
+    color: '#9CA3AF',
+    textAlign: 'center',
+  },
+});
 
 export default PlayersScreen;
